@@ -35,7 +35,7 @@
    }
 </style>
 <body>
-  <p class="ptitle">银行家算法--javascript</p>
+  <p class="ptitle">银行家算法--请输入请求向量request</p>
   <p>
     进程号: <input type="text" id="pnum"> A:<input type="text" id="A"> B:<input type="text" id="B"> C:<input type="text" id="C">
              <input type="submit" class="btn btn-default putval" value="提交">
@@ -68,45 +68,45 @@
          </tr>
          <tr>
            <td>0</td>
-           <td>7 5 3</td>
-           <td>0 1 0</td>
-           <td>7 4 3</td>
-           <td>3 3 2</td>
+           <td id="Ma0">7 5 3</td>
+           <td id="Al0">0 1 0</td>
+           <td id="Ne0">7 4 3</td>
+           <td id="Av">3 3 2</td>
            <td></td>
 
          </tr>
          <tr>
            <td>1</td>
-           <td>3 2 2</td>
-           <td>2 0 0</td>
-           <td>1 2 2</td>
+           <td id="Ma1">3 2 2</td>
+           <td id="Al1">2 0 0</td>
+           <td id="Ne1">1 2 2</td>
            <td></td>
            <td></td>
 
          </tr>
          <tr>
            <td>2</td>
-           <td>9 0 2</td>
-           <td>3 0 2</td>
-           <td>6 0 0</td>
+           <td id="Ma2">9 0 2</td>
+           <td id="Al2">3 0 2</td>
+           <td id="Ne2">6 0 0</td>
            <td></td>
            <td></td>
 
          </tr>
          <tr>
            <td>3</td>
-           <td>2 2 2</td>
-           <td>2 1 1</td>
-           <td>0 1 1</td>
+           <td id="Ma3">2 2 2</td>
+           <td id="Al3">2 1 1</td>
+           <td id="Ne3">0 1 1</td>
            <td></td>
            <td></td>
 
          </tr>
          <tr>
-           <td>4</td>
-           <td>4 3 3</td>
-           <td>0 0 2</td>
-           <td>4 3 1</td>
+           <td >4</td>
+           <td id="Ma4">4 3 3</td>
+           <td id="Al4">0 0 2</td>
+           <td id="Ne4">4 3 1</td>
            <td></td>
            <td></td>
 
@@ -127,6 +127,7 @@
         // var P3 = [{2,2,2},{2,1,1},{0,1,1}];
         // var P3 = [{4,3,3},{0,0,2},{4,3,1}];
         //定义对象
+       
         function Available (A,B,C){
           this.A = A;
           this.B = B;
@@ -147,40 +148,63 @@
           this.B = B;
           this.C = C;
         }
+        function Work (A,B,C){
+          this.A = A;
+          this.B = B;
+          this.C = C;
+        }
+        function judge(finish)
+        {
+
+
+        	for(var n in finish)
+        	{
+        		
+        		if(finish[n]==0)return false;
+        	}
+        	return true;
+
+        }
         //初始的资源是10 5 7
         //t0时刻可用的为 3 3 2
         var Av = new Available (3,3,2);
+        var Wr = new Work(3,3,2)
         //p0 进程
         var Ma0 = new Max (7,5,3);
         var Al0 = new Allocation (0,1,0);
         var Ne0 = new Need (7,4,3);
         //p1 进程
         var Ma1 = new Max (3,2,2);
-        var Ne1 = new Need (1,2,2);
         var Al1 = new Allocation (2,0,0);
-
+        var Ne1 = new Need (1,2,2);
+      
         var Ma2 = new Max (9,0,2);
-        var Ne2 = new Need (6,0,0);
         var Al2 = new Allocation (3,0,2);
-
+        var Ne2 = new Need (6,0,0);
+        
         var Ma3 = new Max (2,2,2);
-        var Ne3 = new Need (0,1,1);
         var Al3 = new Allocation (2,1,1);
+        var Ne3 = new Need (0,1,1);
+        
 
         var Ma4 = new Max (4,3,3);
-        var Ne4 = new Need (4,3,1);
         var Al4 = new Allocation (0,0,2);
+        var Ne4 = new Need (4,3,1);
+        
             //Available = {'A':4,'B':3,'C':2};
 
-        var P0 = [Ma0,Ne0,Al0];
-        var P1 = [Ma1,Ne1,Al1];
-        var P2 = [Ma2,Ne2,Al2];
-        var P3 = [Ma3,Ne3,Al3];
-        var P4 = [Ma4,Ne4,Al4];
+        var P0 = [Ma0,Al0,Ne0];
+        var P1 = [Ma1,Al1,Ne1];
+        var P2 = [Ma2,Al2,Ne2];
+        var P3 = [Ma3,Al3,Ne3];
+        var P4 = [Ma4,Al4,Ne4];
+        var seq=new Array();
         // alert(P0[0].A<Av0.A);
         var P = new Array();
          P = [P0,P1,P2,P3,P4];
+
          //提交进程
+         fresh();
          $(".putval").click(function(){
            //var num = $("#pnum").val();
             var num = parseInt($("#pnum").val());
@@ -191,68 +215,102 @@
              //P[num][1].A = numA;
              //P[num][1].B = numB;
              //P[num][1].C = numC;
-             if(numA<=P[num][1].A && numB<=P[num][1].B &&  numC<=P[num][1].C ){
+           //  console.log(P[num][1].A);
+             if(numA<=P[num][2].A && numB<=P[num][2].B &&  numC<=P[num][2].C ){
                  if(numA<=Av.A && numB<=Av.B &&  numC<=Av.C){
-                   P[num][1].A = numA;
-                   P[num][1].B = numB;
-                   P[num][1].C = numC;
-
+                
+               //    console.log(P[num][1].A);
               //试探着把资源分配出去
                 //Available
-                   Av.A = Av.A - P[num][1].A;
-                   Av.B = Av.B - P[num][1].B;
-                   Av.B = Av.A - P[num][1].B;
+                   Av.A = Av.A - numA;
+                   Av.B = Av.B - numB;
+                   Av.C = Av.C - numC;
                 //Allocation
-                   P[num][2].A = P[num][2].A + numA;
-                   P[num][2].B = P[num][2].B + numB;
-                   P[num][2].C = P[num][2].C + numC;
+                   P[num][1].A = P[num][1].A + numA;
+                   P[num][1].B = P[num][1].B + numB;
+                   P[num][1].C = P[num][1].C + numC;
 
                 //Need
-                  P[num][1].A = P[num][1].A - numA;
-                  P[num][1].B = P[num][1].B - numB;
-                  P[num][1].C = P[num][1].C - numC;
+                  P[num][2].A = P[num][2].A - numA;
+                  P[num][2].B = P[num][2].B - numB;
+                  P[num][2].C = P[num][2].C - numC;
+                   //console.log(P[num][2].A);
                  }else{
                     alert("请等待");
                  }
              }else(
                alert("申请的资源已经大于Need！")
              )
-
+             fresh();
          });
 
          //安全性算法调用
          $(".safebtn").click(function(){
-           safe();
-           safe();
-           safe();
-           safe();
-           safe();
-           if($("ul").children('b').size()<5){
+           if(safe()){
+           	 $("ul").append(" <h3>"+"系统安全"+"</h3>");
+             $("h3").css("background-color","green");
+            seq.forEach(function(i){ 
+
+            	$("ul").append(" <b>"+"P"+i+"</b> ")
+               });
+           
+             
+           }else{
              $("ul").append(" <h2>"+"系统处于不安全状态"+"</h2>");
              $("h2").css("background-color","red");
-           }else{
-             $("ul").append(" <h3>"+"系统安全"+"</h3>");
-             $("h3").css("background-color","green");
            }
          });
 
          //safe();
          var arr = new Array();
          //安全性算法
-         function safe() {
-             for(var i = 0; i < P.length; i++){
-               if(P[i][1].A<=Av.A && P[i][1].B<=Av.B && P[i][1].C<=Av.C ){
-                 Av.A = Av.A + P[i][2].A;
-                 Av.B = Av.B + P[i][2].B;
-                 Av.C = Av.C + P[i][2].C;
+          function fresh()
+        {
+        	P.forEach(function(item,index){
+        		document.getElementById("Ma"+index).innerHTML=item[0].A+' '+item[0].B+' '+item[0].C;
+        		document.getElementById("Al"+index).innerHTML=item[1].A+' '+item[1].B+' '+item[1].C;
+        		document.getElementById("Ne"+index).innerHTML=item[2].A+' '+item[2].B+' '+item[2].C;
+        		
 
+
+        	})
+        	document.getElementById("Av").innerHTML=Av.A+' '+Av.B+' '+Av.C;
+
+        }
+         function safe() {
+         	var finish=[0,0,0,0,0];
+         	seq=[];
+         	Wr.A=Av.A;
+         	Wr.B=Av.B;
+         	Wr.C=Av.C;
+         	   for(var i = 0; i < P.length; i++){
+               if(P[i][2].A<=Wr.A && P[i][2].B<=Wr.B && P[i][2].C<=Wr.C &&finish[i]==0){
+                 Wr.A = Wr.A + P[i][1].A;
+                 console.log('A'+Wr.A+" ");
+                 Wr.B = Wr.B + P[i][1].B;
+                 console.log('B'+Wr.B+" ");
+                 Wr.C = Wr.C + P[i][1].C;
+                 console.log("C"+Wr.C+" ");
+                 finish[i]=1;
                  //alert("P"+i+" "+ Av.A + " " + Av.B +" "+ Av.C);
-                   P.splice(i,1,"hello");
-                 $("ul").append(" <b>"+"P"+i+"</b> ");
+                 console.log(i);
+                 seq.push(i);
+                 console.log(finish);
+
+                 i=-1;
+                //
+
                  //var fnum = i;
                  //$(".num//").val("true");
+
                }
-             }
+           }
+           console.log(judge(finish));
+               if(judge(finish))
+               	return true;
+               	else 
+               	return false; 
+             
              //数组迭代
             //  P.forEach(function (item,index){
             //    console.log(item)
