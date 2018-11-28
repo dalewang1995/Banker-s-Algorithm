@@ -198,9 +198,11 @@
         var P2 = [Ma2,Al2,Ne2];
         var P3 = [Ma3,Al3,Ne3];
         var P4 = [Ma4,Al4,Ne4];
+        var seq=new Array();
         // alert(P0[0].A<Av0.A);
         var P = new Array();
          P = [P0,P1,P2,P3,P4];
+
          //提交进程
          fresh();
          $(".putval").click(function(){
@@ -247,6 +249,11 @@
            if(safe()){
            	 $("ul").append(" <h3>"+"系统安全"+"</h3>");
              $("h3").css("background-color","green");
+            seq.forEach(function(i){ 
+
+            	$("ul").append(" <b>"+"P"+i+"</b> ")
+               });
+           
              
            }else{
              $("ul").append(" <h2>"+"系统处于不安全状态"+"</h2>");
@@ -272,6 +279,7 @@
         }
          function safe() {
          	var finish=[0,0,0,0,0];
+         	seq=[];
          	Wr.A=Av.A;
          	Wr.B=Av.B;
          	Wr.C=Av.C;
@@ -286,10 +294,11 @@
                  finish[i]=1;
                  //alert("P"+i+" "+ Av.A + " " + Av.B +" "+ Av.C);
                  console.log(i);
+                 seq.push(i);
                  console.log(finish);
 
                  i=-1;
-                // $("ul").append(" <b>"+"P"+i+"</b> ");
+                //
 
                  //var fnum = i;
                  //$(".num//").val("true");
